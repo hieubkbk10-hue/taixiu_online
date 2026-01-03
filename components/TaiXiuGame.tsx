@@ -363,6 +363,10 @@ const TaiXiuGame: React.FC = () => {
                        window.matchMedia('(display-mode: fullscreen)').matches ||
                        (window.navigator as any).standalone === true;
 
+  // Detect iOS Safari (not standalone)
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isIOSSafari = isIOS && !isStandalone;
+
   return (
     <div className="w-full h-full flex items-center justify-center p-2 md:p-4 overflow-hidden select-none font-sans"
          onClick={() => {
@@ -371,8 +375,40 @@ const TaiXiuGame: React.FC = () => {
          }}
     >
       
-      {/* === Fullscreen Warning Overlay === */}
-      {!isFullscreen && !isStandalone && (
+      {/* === iOS Safari - Add to Home Screen Prompt === */}
+      {isIOSSafari && (
+          <div className="fixed inset-0 z-[9999] bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
+              <div className="relative mb-4">
+                  <svg className="w-16 h-16 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+              </div>
+              <h2 className="text-lg font-bold text-yellow-500 mb-3 uppercase tracking-wide">Thêm Vào Màn Hình Chính</h2>
+              <p className="text-gray-400 text-sm max-w-xs leading-relaxed mb-4">
+                  Để chơi fullscreen trên iPhone, hãy thêm app vào Màn hình chính:
+              </p>
+              <div className="bg-slate-800 rounded-xl p-4 text-left max-w-xs w-full space-y-3">
+                  <div className="flex items-center gap-3">
+                      <div className="bg-blue-500 rounded-lg w-8 h-8 flex items-center justify-center text-white font-bold text-sm">1</div>
+                      <p className="text-gray-300 text-sm">Nhấn nút <span className="text-blue-400 font-bold">Chia sẻ</span> (Share) ở dưới</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                      <div className="bg-blue-500 rounded-lg w-8 h-8 flex items-center justify-center text-white font-bold text-sm">2</div>
+                      <p className="text-gray-300 text-sm">Chọn <span className="text-blue-400 font-bold">"Thêm vào MH chính"</span></p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                      <div className="bg-blue-500 rounded-lg w-8 h-8 flex items-center justify-center text-white font-bold text-sm">3</div>
+                      <p className="text-gray-300 text-sm">Mở app từ icon trên màn hình</p>
+                  </div>
+              </div>
+              <p className="text-gray-500 text-xs mt-4">
+                  iOS Safari không hỗ trợ fullscreen trong browser
+              </p>
+          </div>
+      )}
+
+      {/* === Fullscreen Warning Overlay (Android/Desktop only) === */}
+      {!isFullscreen && !isStandalone && !isIOSSafari && (
           <div className="fixed inset-0 z-[9999] bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
               <div className="relative mb-6">
                   <Maximize size={70} className="text-yellow-500" />
