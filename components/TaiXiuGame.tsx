@@ -11,7 +11,9 @@ import {
   VolumeX,
   History,
   User,
-  PlusCircle
+  PlusCircle,
+  Maximize,
+  Minimize
 } from 'lucide-react';
 import Dice from './Dice';
 import GameButton from './GameButton';
@@ -51,6 +53,7 @@ const TaiXiuGame: React.FC = () => {
   const [resultSide, setResultSide] = useState<'TÀI' | 'XỈU' | null>(null);
   const [resultTotal, setResultTotal] = useState<number>(0);
   const [userWon, setUserWon] = useState<boolean | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   // === Fake Live Data State ===
   const [fakeTaiAmount, setFakeTaiAmount] = useState(391504490);
@@ -70,19 +73,61 @@ const TaiXiuGame: React.FC = () => {
     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  // === Request Fullscreen on first interaction ===
-  const requestFullscreen = () => {
-    const elem = document.documentElement;
-    if (!document.fullscreenElement) {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen().catch(() => {});
-      } else if ((elem as any).webkitRequestFullscreen) {
-        (elem as any).webkitRequestFullscreen();
-      } else if ((elem as any).msRequestFullscreen) {
-        (elem as any).msRequestFullscreen();
+  // === Fullscreen toggle ===
+  const toggleFullscreen = async () => {
+    try {
+      const elem = document.documentElement as any;
+      const doc = document as any;
+      const currentFullscreen = doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement;
+      
+      if (!currentFullscreen) {
+        if (elem.requestFullscreen) {
+          await elem.requestFullscreen({ navigationUI: 'hide' });
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+          elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullscreen) {
+          elem.msRequestFullscreen();
+        }
+        setIsFullscreen(true);
+      } else {
+        if (doc.exitFullscreen) {
+          await doc.exitFullscreen();
+        } else if (doc.webkitExitFullscreen) {
+          doc.webkitExitFullscreen();
+        } else if (doc.mozCancelFullScreen) {
+          doc.mozCancelFullScreen();
+        } else if (doc.msExitFullscreen) {
+          doc.msExitFullscreen();
+        }
+        setIsFullscreen(false);
       }
+    } catch (e) {
+      setNotification({ message: 'Thêm vào Màn hình chính để chơi fullscreen!', type: 'info' });
     }
   };
+
+  // Listen for fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const doc = document as any;
+      const isFull = !!(doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement);
+      setIsFullscreen(isFull);
+    };
+    
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+    
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, []);
 
   // === Audio Initialization ===
   useEffect(() => {
@@ -316,8 +361,6 @@ const TaiXiuGame: React.FC = () => {
   return (
     <div className="w-full h-full flex items-center justify-center p-2 md:p-4 overflow-hidden select-none font-sans"
          onClick={() => {
-             // Request fullscreen on first tap
-             requestFullscreen();
              // Unlock audio context on any click if not started
              if (soundEnabled && bgmRef.current?.paused) bgmRef.current.play().catch(() => {});
          }}
@@ -410,6 +453,11 @@ const TaiXiuGame: React.FC = () => {
                 icon={soundEnabled ? Volume2 : VolumeX} 
                 color="gray" 
                 onClick={handleSoundClick}
+            />
+            <GameButton 
+                icon={isFullscreen ? Minimize : Maximize} 
+                color="blue" 
+                onClick={toggleFullscreen}
             />
         </div>
 
