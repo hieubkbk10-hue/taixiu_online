@@ -70,6 +70,20 @@ const TaiXiuGame: React.FC = () => {
     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  // === Request Fullscreen on first interaction ===
+  const requestFullscreen = () => {
+    const elem = document.documentElement;
+    if (!document.fullscreenElement) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(() => {});
+      } else if ((elem as any).webkitRequestFullscreen) {
+        (elem as any).webkitRequestFullscreen();
+      } else if ((elem as any).msRequestFullscreen) {
+        (elem as any).msRequestFullscreen();
+      }
+    }
+  };
+
   // === Audio Initialization ===
   useEffect(() => {
     bgmRef.current = new Audio(AUDIO_URLS.BGM); 
@@ -302,6 +316,8 @@ const TaiXiuGame: React.FC = () => {
   return (
     <div className="w-full h-full flex items-center justify-center p-2 md:p-4 overflow-hidden select-none font-sans"
          onClick={() => {
+             // Request fullscreen on first tap
+             requestFullscreen();
              // Unlock audio context on any click if not started
              if (soundEnabled && bgmRef.current?.paused) bgmRef.current.play().catch(() => {});
          }}
@@ -317,21 +333,21 @@ const TaiXiuGame: React.FC = () => {
           </div>
       )}
 
-      {/* === Result Overlay === */}
+      {/* === Result Overlay - Position below the plate === */}
       {phase === 'RESULT' && resultSide && (
-          <div className="absolute z-[60] inset-0 flex items-center justify-center pointer-events-none">
-              <div className="flex flex-col items-center animate-in zoom-in fade-in duration-500 bg-black/60 px-6 py-4 md:px-10 md:py-6 rounded-2xl backdrop-blur-sm border border-white/20">
+          <div className="absolute z-[60] bottom-16 md:bottom-20 left-1/2 transform -translate-x-1/2 pointer-events-none">
+              <div className="flex flex-col items-center animate-in zoom-in fade-in duration-500 bg-black/80 px-4 py-2 md:px-8 md:py-4 rounded-xl backdrop-blur-sm border border-white/20">
                   {/* Result: TÀI or XỈU */}
-                  <div className="flex items-center gap-2 md:gap-3 mb-2">
-                      <span className="text-white font-bold text-lg md:text-2xl">{resultTotal}</span>
-                      <span className={`text-2xl md:text-4xl font-black ${resultSide === 'TÀI' ? 'text-red-400' : 'text-blue-400'}`}>
+                  <div className="flex items-center gap-2 md:gap-3">
+                      <span className="text-white font-bold text-base md:text-xl">{resultTotal}</span>
+                      <span className={`text-xl md:text-3xl font-black ${resultSide === 'TÀI' ? 'text-red-400' : 'text-blue-400'}`}>
                           {resultSide}
                       </span>
                   </div>
                   
                   {/* User bet result */}
                   {userBetSide && (
-                      <div className={`text-xl md:text-3xl font-black mt-1 ${userWon ? 'text-green-400' : 'text-red-500'}`}>
+                      <div className={`text-sm md:text-xl font-black mt-1 ${userWon ? 'text-green-400' : 'text-red-500'}`}>
                           {userWon ? (
                               <>THẮNG +{formatCurrency(winAmount || 0)} VND</>
                           ) : (
@@ -444,36 +460,26 @@ const TaiXiuGame: React.FC = () => {
                  {/* The Plate Background */}
                  <div className="w-full h-full rounded-full gold-border plate-gradient flex items-center justify-center relative shadow-[0_10px_30px_rgba(0,0,0,1)]">
                      
-                     {/* Dice Container - Shakes during rolling */}
-                     <div className={`relative w-20 h-20 md:w-40 md:h-40 lg:w-52 lg:h-52 ${phase === 'ROLLING' ? 'shaking' : ''}`}>
+                     {/* Dice Container */}
+                     <div className={`relative w-[85%] h-[85%] ${phase === 'ROLLING' ? 'shaking' : ''}`}>
                          
                          {/* DICE (Only visible during RESULT phase) */}
-                         <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${phase === 'RESULT' ? 'opacity-100' : 'opacity-0'}`}>
-                             <div className="relative w-full h-full">
-                                 {/* Dice 1 (Top) */}
-                                 <div className="absolute top-1 left-1/2 transform -translate-x-1/2">
-                                     <Dice value={dice[0]} className="w-6 h-6 md:w-10 md:h-10 lg:w-14 lg:h-14" />
-                                 </div>
-                                 {/* Dice 2 (Bottom Left) */}
-                                 <div className="absolute bottom-1 left-2 md:left-4">
-                                     <Dice value={dice[1]} className="w-6 h-6 md:w-10 md:h-10 lg:w-14 lg:h-14" />
-                                 </div>
-                                 {/* Dice 3 (Bottom Right) */}
-                                 <div className="absolute bottom-1 right-2 md:right-4">
-                                     <Dice value={dice[2]} className="w-6 h-6 md:w-10 md:h-10 lg:w-14 lg:h-14" />
-                                 </div>
+                         <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${phase === 'RESULT' ? 'opacity-100' : 'opacity-0'}`}>
+                             <div className="flex gap-1 md:gap-2 items-center justify-center flex-wrap">
+                                 <Dice value={dice[0]} className="w-7 h-7 md:w-12 md:h-12 lg:w-14 lg:h-14" />
+                                 <Dice value={dice[1]} className="w-7 h-7 md:w-12 md:h-12 lg:w-14 lg:h-14" />
+                                 <Dice value={dice[2]} className="w-7 h-7 md:w-12 md:h-12 lg:w-14 lg:h-14" />
                              </div>
                          </div>
 
-                         {/* THE BOWL (LID) - Slides up on RESULT to reveal dice */}
-                         <div className={`
-                             absolute inset-0 rounded-full z-20 bowl-gradient border-4 md:border-6 border-[#7f1d1d] flex items-center justify-center shadow-2xl
-                             ${phase === 'RESULT' ? 'animate-slide-up' : 'translate-y-0'}
-                         `}>
-                              {/* Bowl Handle/Decoration - Clean circle design */}
-                              <div className="w-10 h-10 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full border-2 md:border-4 border-yellow-700/40 bg-gradient-to-br from-red-900 via-red-800 to-black shadow-inner">
-                              </div>
-                         </div>
+                         {/* THE BOWL (LID) - Hidden when RESULT */}
+                         {phase !== 'RESULT' && (
+                             <div className="absolute inset-0 rounded-full z-20 bowl-gradient border-4 md:border-6 border-[#7f1d1d] flex items-center justify-center shadow-2xl">
+                                 {/* Bowl Handle/Decoration */}
+                                 <div className="w-8 h-8 md:w-14 md:h-14 lg:w-20 lg:h-20 rounded-full border-2 md:border-4 border-yellow-700/40 bg-gradient-to-br from-red-900 via-red-800 to-black shadow-inner">
+                                 </div>
+                             </div>
+                         )}
                          
 
                      </div>
