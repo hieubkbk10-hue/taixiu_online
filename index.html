@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Tài Xỉu Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap&subset=vietnamese" rel="stylesheet">
+    <style>
+      body {
+        background-color: #0f172a;
+        font-family: 'Inter', sans-serif;
+        overflow: hidden;
+        touch-action: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      /* Custom Text Gradient for "TAI" / "XIU" */
+      .metallic-text {
+        background: linear-gradient(to bottom, #ffffff 0%, #e5e7eb 40%, #9ca3af 50%, #d1d5db 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0px 2px 0px rgba(0,0,0,0.5));
+        /* Ensure text doesn't get cut off - especially accents like 'dấu hỏi' */
+        padding-bottom: 0.2em; 
+        padding-top: 0.2em;
+        line-height: 1.3;
+      }
+      .gold-text {
+         background: linear-gradient(to bottom, #FCE762 0%, #FFD700 50%, #B8860B 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .gold-border {
+        box-shadow: 0 0 0 2px #B8860B, 0 0 0 4px #FCE762, inset 0 0 10px rgba(0,0,0,0.5);
+      }
+      .table-gradient {
+        background: radial-gradient(circle at center, #0e7490 0%, #164e63 60%, #0c4a6e 100%);
+      }
+      .plate-gradient {
+        background: radial-gradient(circle at center, #374151 0%, #111827 80%, #000000 100%);
+      }
+      .bowl-gradient {
+        background: radial-gradient(circle at 30% 30%, #b91c1c 0%, #7f1d1d 60%, #450a0a 100%);
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.5);
+      }
+      
+      /* Animation for dice shaking */
+      @keyframes shake {
+        0% { transform: translate(1px, 1px) rotate(0deg); }
+        10% { transform: translate(-1px, -2px) rotate(-1deg); }
+        20% { transform: translate(-3px, 0px) rotate(1deg); }
+        30% { transform: translate(3px, 2px) rotate(0deg); }
+        40% { transform: translate(1px, -1px) rotate(1deg); }
+        50% { transform: translate(-1px, 2px) rotate(-1deg); }
+        60% { transform: translate(-3px, 1px) rotate(0deg); }
+        70% { transform: translate(3px, 1px) rotate(-1deg); }
+        80% { transform: translate(-1px, -1px) rotate(1deg); }
+        90% { transform: translate(1px, 2px) rotate(0deg); }
+        100% { transform: translate(1px, -2px) rotate(-1deg); }
+      }
+      .shaking {
+        animation: shake 0.1s;
+        animation-iteration-count: infinite;
+      }
+
+      /* Slow Slide Up for Suspense Reveal */
+      @keyframes slide-up {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-120%); }
+      }
+      .animate-slide-up {
+        animation: slide-up 2s ease-in-out forwards;
+      }
+      
+      /* Utility for masking history */
+      .mask-linear {
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      }
+
+      /* Slow Spin Animation for Rotate Overlay */
+      @keyframes spin-slow {
+        from { transform: translate(-50%, -50%) rotate(0deg); }
+        to { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+      .animate-spin-slow {
+        animation: spin-slow 3s linear infinite;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
