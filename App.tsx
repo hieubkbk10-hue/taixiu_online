@@ -4,7 +4,18 @@ import TaiXiuGame from './components/TaiXiuGame';
 
 function App() {
   return (
-    <div className="w-screen h-screen bg-gray-900 overflow-hidden relative font-sans">
+    <div className="w-screen min-h-screen bg-gray-900 overflow-hidden relative font-sans">
+        {/* Background Image */}
+        <div 
+          className="fixed inset-0 z-0"
+          style={{
+            backgroundImage: "url('/background.webp')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+
         {/* 
           Orientation Warning Overlay 
           Visible only on Portrait AND screens smaller than 'lg' (1024px).
@@ -27,14 +38,7 @@ function App() {
           Hidden on Portrait (Mobile/Tablet) to prevent interaction underneath.
           Visible on Landscape OR Large Portrait.
         */}
-        <div className="w-full h-full flex items-center justify-center relative portrait:hidden lg:portrait:flex">
-             {/* Background Image/Texture Placeholder */}
-            <div className="absolute inset-0 opacity-30 pointer-events-none" style={{
-                backgroundImage: "url('https://picsum.photos/1920/1080?blur=5')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-            }}></div>
-            
+        <div className="w-full h-full flex items-center justify-center relative portrait:hidden lg:portrait:flex z-10">
             {/* Main Game Component */}
             <TaiXiuGame />
         </div>

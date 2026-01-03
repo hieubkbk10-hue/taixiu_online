@@ -14,6 +14,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap&subset=vietnamese" rel="stylesheet">
     <style>
+      /* iOS Safe Area Support */
+      :root {
+        --sat: env(safe-area-inset-top);
+        --sar: env(safe-area-inset-right);
+        --sab: env(safe-area-inset-bottom);
+        --sal: env(safe-area-inset-left);
+      }
+      
+      html {
+        height: 100%;
+        height: -webkit-fill-available;
+      }
+      
       body {
         background-color: #0f172a;
         font-family: 'Inter', sans-serif;
@@ -21,6 +34,14 @@
         touch-action: none;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      }
+      
+      #root {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
       }
       /* Custom Text Gradient for "TAI" / "XIU" */
       .metallic-text {
