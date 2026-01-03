@@ -405,19 +405,19 @@ const TaiXiuGame: React.FC = () => {
 
       {/* === Result Overlay - Position below the plate === */}
       {phase === 'RESULT' && resultSide && (
-          <div className="absolute z-[60] bottom-16 md:bottom-20 left-1/2 transform -translate-x-1/2 pointer-events-none">
-              <div className="flex flex-col items-center animate-in zoom-in fade-in duration-500 bg-black/80 px-4 py-2 md:px-8 md:py-4 rounded-xl backdrop-blur-sm border border-white/20">
+          <div className="absolute z-[60] bottom-10 md:bottom-16 left-1/2 transform -translate-x-1/2 pointer-events-none">
+              <div className="flex flex-col items-center animate-in zoom-in fade-in duration-500 bg-black/80 px-3 py-1.5 md:px-6 md:py-3 rounded-lg backdrop-blur-sm border border-white/20">
                   {/* Result: TÀI or XỈU */}
-                  <div className="flex items-center gap-2 md:gap-3">
-                      <span className="text-white font-bold text-base md:text-xl">{resultTotal}</span>
-                      <span className={`text-xl md:text-3xl font-black ${resultSide === 'TÀI' ? 'text-red-400' : 'text-blue-400'}`}>
+                  <div className="flex items-center gap-1.5 md:gap-2">
+                      <span className="text-white font-bold text-sm md:text-lg">{resultTotal}</span>
+                      <span className={`text-lg md:text-2xl font-black ${resultSide === 'TÀI' ? 'text-red-400' : 'text-blue-400'}`}>
                           {resultSide}
                       </span>
                   </div>
                   
                   {/* User bet result */}
                   {userBetSide && (
-                      <div className={`text-sm md:text-xl font-black mt-1 ${userWon ? 'text-green-400' : 'text-red-500'}`}>
+                      <div className={`text-xs md:text-base font-black mt-0.5 ${userWon ? 'text-green-400' : 'text-red-500'}`}>
                           {userWon ? (
                               <>THẮNG +{formatCurrency(winAmount || 0)} VND</>
                           ) : (
@@ -438,10 +438,10 @@ const TaiXiuGame: React.FC = () => {
       />
 
       {/* Main Table Oval - Responsive for landscape mobile */}
-      <div className="relative w-full max-w-7xl h-full max-h-[95vh] bg-cyan-900 rounded-[40px] md:rounded-[100px] lg:rounded-[180px] border-4 border-[#B8860B] shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden table-gradient">
+      <div className="relative w-full max-w-7xl h-full max-h-[100vh] bg-cyan-900 rounded-[30px] md:rounded-[80px] lg:rounded-[150px] border-2 md:border-4 border-[#B8860B] shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden table-gradient">
         
         {/* Inner Border Decoration */}
-        <div className="absolute inset-1.5 md:inset-4 rounded-[35px] md:rounded-[90px] lg:rounded-[170px] border border-cyan-400/30 pointer-events-none"></div>
+        <div className="absolute inset-1 md:inset-3 rounded-[26px] md:rounded-[75px] lg:rounded-[145px] border border-cyan-400/30 pointer-events-none"></div>
         
 
 
@@ -466,14 +466,14 @@ const TaiXiuGame: React.FC = () => {
         </div>
 
         {/* === Left Controls (Bottom Left) === */}
-        <div className="absolute left-3 md:left-6 bottom-3 md:bottom-6 flex gap-1.5 md:gap-2 z-20">
+        <div className="absolute left-2 md:left-6 bottom-1 md:bottom-4 flex gap-1 md:gap-2 z-20">
             <GameButton icon={BarChart2} color="red" onClick={handleStatsClick} />
             <GameButton icon={HelpCircle} color="blue" onClick={handleHelpClick} />
             <GameButton icon={FileText} color="blue" onClick={handleHistoryClick} />
         </div>
 
         {/* === Right Controls (Bottom Right) === */}
-        <div className="absolute right-3 md:right-6 bottom-3 md:bottom-6 flex gap-1.5 md:gap-2 z-20">
+        <div className="absolute right-2 md:right-6 bottom-1 md:bottom-4 flex gap-1 md:gap-2 z-20">
             <GameButton icon={Trophy} color="blue" onClick={handleRankingClick} />
             <GameButton icon={MessageCircle} color="blue" onClick={handleChatClick} />
             <GameButton 
@@ -489,12 +489,12 @@ const TaiXiuGame: React.FC = () => {
         </div>
 
         {/* === Center Game Area === */}
-        <div className="absolute inset-0 flex items-center justify-center z-10 pt-8 md:pt-16 pb-10 md:pb-4 px-8 md:px-24">
+        <div className="absolute inset-0 flex items-center justify-center z-10 pt-6 md:pt-12 pb-8 md:pb-4 px-4 md:px-20">
             
             {/* TÀI SIDE (LEFT) */}
             <div className={`flex-1 flex flex-col items-center justify-center transition-opacity duration-300 ${phase === 'RESULT' && userBetSide !== 'TÀI' ? 'opacity-40 blur-[1px]' : 'opacity-100'}`}>
-                <div className="relative mb-1 md:mb-4 group cursor-pointer" onClick={() => openBetModal('TÀI')}>
-                     <h1 className="text-3xl md:text-6xl lg:text-9xl font-black metallic-text tracking-tighter transform scale-y-110 group-hover:scale-110 transition-transform duration-200 py-1 md:py-2">
+                <div className="relative mb-0.5 md:mb-2 group cursor-pointer" onClick={() => openBetModal('TÀI')}>
+                     <h1 className="text-2xl md:text-5xl lg:text-8xl font-black metallic-text tracking-tighter transform scale-y-110 group-hover:scale-110 transition-transform duration-200 py-0.5 md:py-1">
                         TÀI
                      </h1>
                      {userBetSide === 'TÀI' && (
@@ -509,14 +509,14 @@ const TaiXiuGame: React.FC = () => {
                     <span className="text-[10px] md:text-sm">{formatCurrency(displayTaiUsers)}</span>
                 </div>
 
-                <div className="text-yellow-400 font-bold text-sm md:text-2xl lg:text-3xl drop-shadow-md mb-1 md:mb-6 tabular-nums tracking-tight">
+                <div className="text-yellow-400 font-bold text-xs md:text-xl lg:text-2xl drop-shadow-md mb-0.5 md:mb-3 tabular-nums tracking-tight">
                     {formatCurrency(displayTaiAmount)}
                 </div>
 
                 <button 
                     onClick={() => openBetModal('TÀI')}
                     disabled={phase !== 'BETTING'}
-                    className={`bg-gradient-to-b from-yellow-400 to-yellow-600 text-white font-black uppercase text-[10px] md:text-lg lg:text-xl py-1 md:py-2 px-3 md:px-8 rounded-full border-b-2 md:border-b-4 border-yellow-800 shadow-lg active:translate-y-1 active:border-b-0 transition-all whitespace-nowrap min-w-[60px] md:min-w-[140px]
+                    className={`bg-gradient-to-b from-yellow-400 to-yellow-600 text-white font-black uppercase text-[9px] md:text-base lg:text-lg py-0.5 md:py-1.5 px-2 md:px-6 rounded-full border-b-2 md:border-b-4 border-yellow-800 shadow-lg active:translate-y-1 active:border-b-0 transition-all whitespace-nowrap min-w-[50px] md:min-w-[120px]
                     ${phase !== 'BETTING' ? 'grayscale opacity-70 cursor-not-allowed' : 'hover:brightness-110'}`}
                 >
                     {userBetSide === 'TÀI' ? `${formatCurrency(userBetAmount)}` : 'CƯỢC'}
@@ -524,10 +524,10 @@ const TaiXiuGame: React.FC = () => {
             </div>
 
             {/* CENTER PLATE AREA - Responsive */}
-            <div className="relative w-32 h-32 md:w-64 md:h-64 lg:w-96 lg:h-96 flex-shrink-0 mx-1 md:mx-4">
+            <div className="relative w-28 h-28 md:w-56 md:h-56 lg:w-80 lg:h-80 flex-shrink-0 mx-1 md:mx-4">
                  {/* Countdown Timer */}
-                 <div className="absolute -top-8 md:-top-14 lg:-top-20 left-1/2 transform -translate-x-1/2 z-30">
-                    <div className={`text-4xl md:text-6xl lg:text-8xl font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] transition-colors duration-300 ${phase === 'LOCK' ? 'text-red-500 animate-pulse' : 'gold-text'}`}>
+                 <div className="absolute -top-6 md:-top-12 lg:-top-16 left-1/2 transform -translate-x-1/2 z-30">
+                    <div className={`text-3xl md:text-5xl lg:text-7xl font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] transition-colors duration-300 ${phase === 'LOCK' ? 'text-red-500 animate-pulse' : 'gold-text'}`}>
                         {phase === 'ROLLING' ? '...' : timeLeft}
                     </div>
                  </div>
@@ -561,8 +561,8 @@ const TaiXiuGame: React.FC = () => {
                  </div>
                  
                  {/* Status Text under plate */}
-                 <div className="absolute -bottom-6 md:-bottom-10 lg:-bottom-12 left-1/2 transform -translate-x-1/2 w-full text-center">
-                    <span className="text-cyan-400 font-bold text-[10px] md:text-sm lg:text-lg uppercase tracking-widest drop-shadow-md whitespace-nowrap">
+                 <div className="absolute -bottom-5 md:-bottom-8 lg:-bottom-10 left-1/2 transform -translate-x-1/2 w-full text-center">
+                    <span className="text-cyan-400 font-bold text-[9px] md:text-xs lg:text-base uppercase tracking-widest drop-shadow-md whitespace-nowrap">
                         {phase === 'BETTING' ? 'ĐẶT CƯỢC' : phase === 'LOCK' ? 'CÂN CỬA' : phase === 'ROLLING' ? 'ĐANG LẮC' : 'KẾT QUẢ'}
                     </span>
                  </div>
@@ -570,8 +570,8 @@ const TaiXiuGame: React.FC = () => {
 
             {/* XỈU SIDE (RIGHT) */}
              <div className={`flex-1 flex flex-col items-center justify-center transition-opacity duration-300 ${phase === 'RESULT' && userBetSide !== 'XỈU' ? 'opacity-40 blur-[1px]' : 'opacity-100'}`}>
-                <div className="relative mb-1 md:mb-4 group cursor-pointer" onClick={() => openBetModal('XỈU')}>
-                     <h1 className="text-3xl md:text-6xl lg:text-9xl font-black metallic-text tracking-tighter transform scale-y-110 group-hover:scale-110 transition-transform duration-200 py-1 md:py-2">
+                <div className="relative mb-0.5 md:mb-2 group cursor-pointer" onClick={() => openBetModal('XỈU')}>
+                     <h1 className="text-2xl md:text-5xl lg:text-8xl font-black metallic-text tracking-tighter transform scale-y-110 group-hover:scale-110 transition-transform duration-200 py-0.5 md:py-1">
                         XỈU
                      </h1>
                      {userBetSide === 'XỈU' && (
@@ -586,14 +586,14 @@ const TaiXiuGame: React.FC = () => {
                     <span className="text-[10px] md:text-sm">{formatCurrency(displayXiuUsers)}</span>
                 </div>
 
-                <div className="text-yellow-400 font-bold text-sm md:text-2xl lg:text-3xl drop-shadow-md mb-1 md:mb-6 tabular-nums tracking-tight">
+                <div className="text-yellow-400 font-bold text-xs md:text-xl lg:text-2xl drop-shadow-md mb-0.5 md:mb-3 tabular-nums tracking-tight">
                     {formatCurrency(displayXiuAmount)}
                 </div>
 
                 <button 
                     onClick={() => openBetModal('XỈU')}
                     disabled={phase !== 'BETTING'}
-                    className={`bg-gradient-to-b from-yellow-400 to-yellow-600 text-white font-black uppercase text-[10px] md:text-lg lg:text-xl py-1 md:py-2 px-3 md:px-8 rounded-full border-b-2 md:border-b-4 border-yellow-800 shadow-lg active:translate-y-1 active:border-b-0 transition-all whitespace-nowrap min-w-[60px] md:min-w-[140px]
+                    className={`bg-gradient-to-b from-yellow-400 to-yellow-600 text-white font-black uppercase text-[9px] md:text-base lg:text-lg py-0.5 md:py-1.5 px-2 md:px-6 rounded-full border-b-2 md:border-b-4 border-yellow-800 shadow-lg active:translate-y-1 active:border-b-0 transition-all whitespace-nowrap min-w-[50px] md:min-w-[120px]
                     ${phase !== 'BETTING' ? 'grayscale opacity-70 cursor-not-allowed' : 'hover:brightness-110'}`}
                 >
                     {userBetSide === 'XỈU' ? `${formatCurrency(userBetAmount)}` : 'CƯỢC'}
