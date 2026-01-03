@@ -358,6 +358,11 @@ const TaiXiuGame: React.FC = () => {
   const displayTaiUsers = fakeTaiUsers + (userBetSide === 'TÀI' ? 1 : 0);
   const displayXiuUsers = fakeXiuUsers + (userBetSide === 'XỈU' ? 1 : 0);
 
+  // Check if running as standalone PWA (fullscreen by default)
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                       window.matchMedia('(display-mode: fullscreen)').matches ||
+                       (window.navigator as any).standalone === true;
+
   return (
     <div className="w-full h-full flex items-center justify-center p-2 md:p-4 overflow-hidden select-none font-sans"
          onClick={() => {
@@ -366,6 +371,28 @@ const TaiXiuGame: React.FC = () => {
          }}
     >
       
+      {/* === Fullscreen Warning Overlay === */}
+      {!isFullscreen && !isStandalone && (
+          <div className="fixed inset-0 z-[9999] bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
+              <div className="relative mb-6">
+                  <Maximize size={70} className="text-yellow-500" />
+              </div>
+              <h2 className="text-xl md:text-2xl font-bold text-yellow-500 mb-3 uppercase tracking-widest">Chế Độ Toàn Màn Hình</h2>
+              <p className="text-gray-400 text-sm md:text-base max-w-xs leading-relaxed mb-6">
+                  Vui lòng bật chế độ toàn màn hình để có trải nghiệm game tốt nhất.
+              </p>
+              <button 
+                  onClick={toggleFullscreen}
+                  className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold py-3 px-8 rounded-full text-lg shadow-lg active:scale-95 transition-transform"
+              >
+                  Vào Fullscreen
+              </button>
+              <p className="text-gray-500 text-xs mt-4 max-w-xs">
+                  Hoặc thêm vào Màn hình chính để chơi tự động fullscreen
+              </p>
+          </div>
+      )}
+
       {/* === Notification Toast === */}
       {notification && (
           <div className={`absolute top-[15%] left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 rounded-full shadow-2xl border-2 animate-in fade-in slide-in-from-top-4 duration-300 font-bold tracking-wide whitespace-nowrap
